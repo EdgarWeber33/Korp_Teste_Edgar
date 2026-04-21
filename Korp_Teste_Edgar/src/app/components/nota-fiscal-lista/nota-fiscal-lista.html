@@ -1,0 +1,56 @@
+<div style="margin-top: 30px; border-top: 2px solid #ccc; padding-top: 20px;">
+  <h2>Gerenciamento de Notas Fiscais</h2>
+  
+  <button (click)="criarNovaNota()" style="padding: 10px; background: #4CAF50; color: white; border: none; cursor: pointer;">
+    + Criar Nova Nota (Aberta)
+  </button>
+
+  <div *ngIf="notas.length > 0" style="margin-top: 20px; background: #eee; padding: 15px;">
+    <h3>Adicionar Produto à Nota</h3>
+    <select [(ngModel)]="notaSelecionadaId" style="padding: 8px;">
+      <option [value]="0">Selecione a Nota</option>
+      <option *ngFor="let n of notas" [value]="n.id">Nota nº {{ n.numero }} ({{ n.status }})</option>
+    </select>
+
+    <select [(ngModel)]="produtoSelecionadoId" style="padding: 8px; margin-left: 10px;">
+      <option [value]="0">Selecione o Produto</option>
+      <option *ngFor="let p of produtos" [value]="p.id">{{ p.descricao }} (Estoque: {{ p.saldo }})</option>
+    </select>
+
+    <input type="number" [(ngModel)]="quantidade" style="width: 60px; padding: 8px; margin-left: 10px;">
+    
+    <button (click)="adicionarProduto()" style="padding: 8px; margin-left: 10px;">Adicionar</button>
+  </div>
+
+  <!-- INDICADOR DE PROCESSAMENTO (O que o teste pede!) -->
+  <div *ngIf="carregando" style="margin: 20px; color: #f39c12; font-weight: bold;">
+    ⌛ Processando impressão e atualizando estoque...
+  </div>
+
+  <table border="1" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead style="background: #ddd;">
+      <tr>
+        <th>Nº Nota</th>
+        <th>Status</th>
+        <th>Produtos</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let n of notas">
+        <td style="padding: 10px;">{{ n.numero }}</td>
+        <td style="padding: 10px;">{{ n.status }}</td>
+        <td style="padding: 10px;">
+          <ul>
+            <li *ngFor="let item of n.itens">{{ item.produtoDescricao }} - Qtd: {{ item.quantidade }}</li>
+          </ul>
+        </td>
+        <td style="padding: 10px;">
+          <button *ngIf="n.status === 'Aberta'" (click)="imprimir(n.id!)" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+            🖨️ Imprimir e Fechar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

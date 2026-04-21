@@ -1,0 +1,29 @@
+<div style="background: #f4f4f4; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+  <h3>Cadastrar Novo Produto</h3>
+  <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+    <input type="text" [(ngModel)]="novoProduto.codigo" placeholder="Código" style="padding: 8px;">
+    <input type="text" [(ngModel)]="novoProduto.descricao" placeholder="Descrição" style="padding: 8px;">
+    <input type="number" [(ngModel)]="novoProduto.saldo" placeholder="Saldo" style="padding: 8px; width: 80px;">
+    <button (click)="salvar()" style="padding: 8px 15px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer;">
+      Salvar
+    </button>
+  </div>
+</div>
+
+<h3>Produtos em Estoque</h3>
+<table border="1" style="width: 100%; border-collapse: collapse;">
+  <thead style="background: #ddd;">
+    <tr>
+      <th>Código</th>
+      <th>Descrição</th>
+      <th>Saldo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of produtos">
+      <td style="padding: 8px;">{{ p.codigo }}</td>
+      <td style="padding: 8px;">{{ p.descricao }}</td>
+      <td style="padding: 8px;">{{ p.saldo }}</td>
+    </tr>
+  </tbody>
+</table>
