@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "f9WwfvlLvSg=",
+  "dgSpecHash": "XCAqye3tFSA=",
   "success": true,
-  "projectFilePath": "C:\\ApiCorreta\\ApiCorreta.csproj",
+  "projectFilePath": "C:\\Entrega_Korp_Edgar\\ApiFaturamento\\ApiCorreta.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\edgar\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\edgar\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.0\\microsoft.aspnetcore.openapi.8.0.0.nupkg.sha512",

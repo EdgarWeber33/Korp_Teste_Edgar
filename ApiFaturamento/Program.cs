@@ -11,11 +11,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>
     {
-        policy.WithOrigins("http://localhost:4200" )
+        policy.WithOrigins("http://localhost:4200"  )
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
+
+builder.Services.AddHttpClient(); // <-- ADICIONE ESTA LINHA
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

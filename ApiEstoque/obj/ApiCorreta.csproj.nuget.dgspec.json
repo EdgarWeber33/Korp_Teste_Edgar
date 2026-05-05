@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\ApiEstoque\\ApiCorreta.csproj": {}
+    "C:\\Entrega_Korp_Edgar\\ApiEstoque\\ApiCorreta.csproj": {}
   },
   "projects": {
-    "C:\\ApiEstoque\\ApiCorreta.csproj": {
+    "C:\\Entrega_Korp_Edgar\\ApiEstoque\\ApiCorreta.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\ApiEstoque\\ApiCorreta.csproj",
+        "projectUniqueName": "C:\\Entrega_Korp_Edgar\\ApiEstoque\\ApiCorreta.csproj",
         "projectName": "ApiCorreta",
-        "projectPath": "C:\\ApiEstoque\\ApiCorreta.csproj",
+        "projectPath": "C:\\Entrega_Korp_Edgar\\ApiEstoque\\ApiCorreta.csproj",
         "packagesPath": "C:\\Users\\edgar\\.nuget\\packages\\",
-        "outputPath": "C:\\ApiEstoque\\obj\\",
+        "outputPath": "C:\\Entrega_Korp_Edgar\\ApiEstoque\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\edgar\\AppData\\Roaming\\NuGet\\NuGet.Config"

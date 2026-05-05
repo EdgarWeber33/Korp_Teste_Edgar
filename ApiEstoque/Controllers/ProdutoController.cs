@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ApiCorreta.Models;
+using ApiCorreta.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiCorreta.Controllers;
 
@@ -7,19 +9,23 @@ namespace ApiCorreta.Controllers;
 [Route("api/[controller]")]
 public class ProdutoController : ControllerBase
 {
-    private static List<Produto> _produtos = new();
-    private static int _nextId = 1;
+    private readonly AppDbContext _context;
+
+    public ProdutoController(AppDbContext context)
+    {
+        _context = context;
+    }
 
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        return Ok(_produtos);
+        return Ok(await _context.Produtos.ToListAsync());
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        var produto = _produtos.FirstOrDefault(p => p.Id == id);
+        var produto = await _context.Produtos.FirstOrDefaultAsync(p => p.Id == id);
         if (produto == null)
         {
             return NotFound($"Produto com ID {id} não encontrado");
@@ -28,17 +34,17 @@ public class ProdutoController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(Produto produto)
+    public async Task<IActionResult> Create(Produto produto)
     {
-        produto.Id = _nextId++;
-        _produtos.Add(produto);
+        _context.Produtos.Add(produto);
+        await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetById), new { id = produto.Id }, produto);
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(int id, Produto produtoAtualizado)
+    public async Task<IActionResult> Update(int id, Produto produtoAtualizado)
     {
-        var produto = _produtos.FirstOrDefault(p => p.Id == id);
+        var produto = await _context.Produtos.FirstOrDefaultAsync(p => p.Id == id);
         if (produto == null)
         {
             return NotFound($"Produto com ID {id} não encontrado");
@@ -47,30 +53,45 @@ public class ProdutoController : ControllerBase
         produto.Codigo = produtoAtualizado.Codigo;
         produto.Descricao = produtoAtualizado.Descricao;
         produto.Saldo = produtoAtualizado.Saldo;
+        _context.Produtos.Update(produto);
+        await _context.SaveChangesAsync();
 
         return Ok(produto);
     }
 
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    // Novo endpoint para reduzir o saldo do produto
+    [HttpPut("{id}/reduzir-saldo")]
+    public async Task<IActionResult> ReduzirSaldo(int id, [FromBody] ReduzirSaldoDto reduzirSaldoDto)
     {
-        var produto = _produtos.FirstOrDefault(p => p.Id == id);
+        var produto = await _context.Produtos.FirstOrDefaultAsync(p => p.Id == id);
         if (produto == null)
         {
             return NotFound($"Produto com ID {id} não encontrado");
         }
 
-        _produtos.Remove(produto);
+        if (produto.Saldo < reduzirSaldoDto.Quantidade)
+        {
+            return BadRequest($"Saldo insuficiente para o produto {produto.Descricao}. Disponível: {produto.Saldo}, Necessário: {reduzirSaldoDto.Quantidade}");
+        }
+
+        produto.Saldo -= reduzirSaldoDto.Quantidade;
+        _context.Produtos.Update(produto);
+        await _context.SaveChangesAsync();
+
+        return Ok(produto);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var produto = await _context.Produtos.FirstOrDefaultAsync(p => p.Id == id);
+        if (produto == null)
+        {
+            return NotFound($"Produto com ID {id} não encontrado");
+        }
+
+        _context.Produtos.Remove(produto);
+        await _context.SaveChangesAsync();
         return NoContent();
     }
-
-    // Método para permitir que outros controllers acessem a lista de produtos
-    public static List<Produto> ObterListaProdutos()
-    {
-        return _produtos;
-    }
-
-
-    
-
 }
